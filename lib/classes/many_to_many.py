@@ -145,15 +145,4 @@ article_1.title = 500
 print(article_1.title)
 print(isinstance(article_1.title, str)) 
 
-a1 = Author("Alice")
-m1 = Magazine("TechToday", "Technology")
-m2 = Magazine("Vogue", "Fashion")
-
-a1.add_article(m1, "AI in 2025")
-a1.add_article(m1, "The Future of Quantum")
-a1.add_article(m1, "Blockchain Basics")
-
-print(a1.topic_areas())  
-print(m1.article_titles())  
-print(m1.contributing_authors())  # 
 

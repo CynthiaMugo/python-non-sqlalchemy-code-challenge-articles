@@ -69,14 +69,10 @@ class Author:
         return list(set(article.magazine for article in self.articles()))
 
     def add_article(self, magazine, title):
-        if not isinstance(magazine, Magazine):
-            raise Exception("Must provide a Magazine instance")
-        return Article(self, magazine, title)
+        pass
 
     def topic_areas(self):
-        if not self.articles():
-            return None
-        return list(set(mag.category for mag in self.magazines()))
+        pass
 
 class Magazine:
     def __init__(self, name, category):
@@ -113,16 +109,10 @@ class Magazine:
         return list(set(article.author for article in self.articles()))
 
     def article_titles(self):
-        titles = [article.title for article in self.articles()]
-        return titles if titles else None
+        pass
 
     def contributing_authors(self):
-        authors = []
-        for author in self.contributors():
-            count = sum(1 for article in self.articles() if article.author == author)
-            if count > 2:
-                authors.append(author)
-        return authors if authors else None
+        pass
 
 
 jay = Author("Rihanna")

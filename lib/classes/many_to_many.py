@@ -59,7 +59,7 @@ class Author:
     def name(self, new_name):
         if hasattr(self, '_name'):
             return
-            raise Exception("Author name cannot be changed")
+            # raise Exception("Author name cannot be changed")
         self._name = new_name
 
     def articles(self):
@@ -69,10 +69,14 @@ class Author:
         return list(set(article.magazine for article in self.articles()))
 
     def add_article(self, magazine, title):
-        pass
+        if not isinstance(magazine, Magazine):
+            raise Exception("Must provide a Magazine instance")
+        return Article(self, magazine, title)
 
     def topic_areas(self):
-        pass
+        if not self.articles():
+            return None
+        return list(set(mag.category for mag in self.magazines()))
 
 class Magazine:
     def __init__(self, name, category):
@@ -85,9 +89,11 @@ class Magazine:
     @name.setter
     def name(self, new_name):
         if not isinstance(new_name, str):
-            raise Exception("Magazine name must be a string!")
+            return
+            # raise Exception("Magazine name must be a string!")
         if not (2 <= len(new_name) <= 16):
-            raise Exception("Magazine name must be 2–16 characters long")
+            return
+            # raise Exception("Magazine name must be 2–16 characters long")
         self._name = new_name
         
     @property
@@ -96,7 +102,8 @@ class Magazine:
     @category.setter
     def category(self, new_category):
         if not isinstance(new_category, str) or len(new_category) == 0:
-            raise Exception("Magazine category must be a string and at least 1 character long")
+            return
+            # raise Exception("Magazine category must be a string and at least 1 character long")
         self._category = new_category
 
     def articles(self):
@@ -106,10 +113,16 @@ class Magazine:
         return list(set(article.author for article in self.articles()))
 
     def article_titles(self):
-        pass
+        titles = [article.title for article in self.articles()]
+        return titles if titles else None
 
     def contributing_authors(self):
-        pass
+        authors = []
+        for author in self.contributors():
+            count = sum(1 for article in self.articles() if article.author == author)
+            if count > 2:
+                authors.append(author)
+        return authors if authors else None
 
 
 jay = Author("Rihanna")
@@ -133,3 +146,24 @@ article1 = Article(jay, vogue, "Fashion and Culture")
 print(article1.title)
 # article1.title = "Another Title" #Exception: Article title cannot be changed
 # print(article1.title)
+
+author = Author("Carry Bradshaw")
+magazine = Magazine("Vogue", "Fashion")
+article_1 = Article(author, magazine, "How to wear a tutu with style")
+
+article_1.title = 500
+print(article_1.title)
+print(isinstance(article_1.title, str)) 
+
+a1 = Author("Alice")
+m1 = Magazine("TechToday", "Technology")
+m2 = Magazine("Vogue", "Fashion")
+
+a1.add_article(m1, "AI in 2025")
+a1.add_article(m1, "The Future of Quantum")
+a1.add_article(m1, "Blockchain Basics")
+
+print(a1.topic_areas())  
+print(m1.article_titles())  
+print(m1.contributing_authors())  # 
+
